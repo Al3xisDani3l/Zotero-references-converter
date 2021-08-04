@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "toword": {
+      "commandName": "Project",
+      "commandLineArgs": "-n \"cls_test.json\""
+    },
+    "WSL 2": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}

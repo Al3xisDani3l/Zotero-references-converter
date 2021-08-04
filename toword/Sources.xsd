@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:b="http://schemas.openxmlformats.org/officeDocument/2006/bibliography" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.openxmlformats.org/officeDocument/2006/bibliography" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Sources">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Source">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Tag" type="xs:string" />
+              <xs:element name="SourceType" type="xs:string" />
+              <xs:element name="Guid" type="xs:string" />
+              <xs:element name="Title" type="xs:string" />
+              <xs:element name="Year" type="xs:string" />
+              <xs:element name="Author">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Author">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="NameList">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Person">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="Last" type="xs:string" />
+                                      <xs:element name="Middle" type="xs:string" />
+                                      <xs:element name="First" type="xs:string" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Editor">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="NameList">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Person">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="Last" type="xs:string" />
+                                      <xs:element minOccurs="0" name="Middle" type="xs:string" />
+                                      <xs:element minOccurs="0" name="First" type="xs:string" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="City" type="xs:string" />
+              <xs:element name="Publisher" type="xs:string" />
+              <xs:element name="StateProvince" type="xs:string" />
+              <xs:element name="CountryRegion" type="xs:string" />
+              <xs:element name="Volume" type="xs:string" />
+              <xs:element name="NumberVolumes" type="xs:string" />
+              <xs:element name="ShortTitle" type="xs:string" />
+              <xs:element name="StandardNumber" type="xs:string" />
+              <xs:element name="Pages" type="xs:string" />
+              <xs:element name="Edition" type="xs:string" />
+              <xs:element name="Comments" type="xs:string" />
+              <xs:element name="Medium" type="xs:string" />
+              <xs:element name="YearAccessed" type="xs:string" />
+              <xs:element name="MonthAccessed" type="xs:string" />
+              <xs:element name="DayAccessed" type="xs:string" />
+              <xs:element name="URL" type="xs:string" />
+              <xs:element name="DOI" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="SelectedStyle" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
