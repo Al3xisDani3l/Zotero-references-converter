@@ -27,7 +27,11 @@ namespace convert
 
                 if (args.Length > 0)
                 {
-                    if (args.Length % 2 == 0)
+                    if (args.Length == 1)
+                    {
+                        NameJsonFile = args[0];
+                    }
+                    else if (args.Length % 2 == 0)
                     {
                         for (int i = 0; i < args.Length; i++)
                         {
