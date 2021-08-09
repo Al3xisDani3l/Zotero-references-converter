@@ -2,7 +2,7 @@
   "profiles": {
     "toword": {
       "commandName": "Project",
-      "commandLineArgs": "-n \"cls_test.json\""
+      "commandLineArgs": "-f \"C:\\Users\\alexi\\Desktop\\ref.json\""
     },
     "WSL 2": {
       "commandName": "WSL2",

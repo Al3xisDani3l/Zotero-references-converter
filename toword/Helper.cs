@@ -70,7 +70,7 @@ namespace convert
                 newSource.Author = authorBase;
 
                 newSource.City = item.publisherplace;
-                newSource.Comments = item.note;
+                newSource.Comments = item._abstract;
                 newSource.CountryRegion = item.publisherplace;
                 if (item.accessed is not null)
                 {
@@ -108,10 +108,10 @@ namespace convert
                 DateTime date;
                 if (item.issued is not null)
                 {
-                    if (DateTime.TryParse(item.issued.literal ?? "", out date))
+                    if (item.issued.dateparts is not null)
                     {
-                        newSource.Year = date.Year.ToString();
-                        newSource.Tag = item.title.Substring(0, 3) + newSource.Year;
+                        newSource.Year = item.issued.dateparts[0][0].ToString();
+                        newSource.Tag = item.title.Substring(0, 4)+ "_"+ newSource.Year;
                     }
                     else
                     {

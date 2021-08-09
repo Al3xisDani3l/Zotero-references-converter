@@ -70,7 +70,7 @@ namespace convert
             {
                 string JsonString = File.ReadAllText(FullPathJsonFile);
                 var result = JsonString.Replace("abstract", "_abstract").Replace("-", ""); //Corrigimos unos errores de formato del archivo json
-                referencesByJson = JsonConvert.DeserializeObject<List<Reference>>(JsonString);
+                referencesByJson = JsonConvert.DeserializeObject<List<Reference>>(result);
                 Console.WriteLine($"{referencesByJson.Count} referencias cargadas desde Zotero");
             }
             catch (Exception err)
