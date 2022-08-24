@@ -1,9 +1,6 @@
-﻿using System;
+﻿using convert.xml;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using convert.xml;
 
 namespace convert
 {
@@ -20,13 +17,13 @@ namespace convert
 
                 //agregamos los authores
                 var author = new xml.Author();
-                if (item.author is not null)
+                if (item.Author is not null)
                 {
                    
                     List<Person> authors = new List<Person>();
-                    foreach (var aut in item.author)
+                    foreach (var aut in item.Author)
                     {
-                        Person person = new Person() { First = aut.given, Last = aut.family };
+                        Person person = new Person() { First = aut.Given, Last = aut.Family };
                         authors.Add(person);
                     }
                     author.NameList = new NameList() { Person = authors };
@@ -35,13 +32,13 @@ namespace convert
 
                 //Agregamos los editores
                 var editor = new xml.Editor();
-                if (item.editor is not null)
+                if (item.Editor is not null)
                 {
                  
                     List<Person> editores = new List<Person>();
-                    foreach (var aut in item.editor)
+                    foreach (var aut in item.Editor)
                     {
-                        Person person = new Person() { First = aut.given, Last = aut.family };
+                        Person person = new Person() { First = aut.Given, Last = aut.Family };
                         editores.Add(person);
                     }
                     editor.NameList = new NameList() { Person = editores };
@@ -51,14 +48,14 @@ namespace convert
 
                 //agregamos los traductores
                 var translator = new xml.Translator();
-                if (item.translator is not null)
+                if (item.Translator is not null)
                 {
                    
 
                     List<Person> traductores = new List<Person>();
-                    foreach (var aut in item.translator)
+                    foreach (var aut in item.Translator)
                     {
-                        Person person = new Person() { First = aut.given, Last = aut.family };
+                        Person person = new Person() { First = aut.Given, Last = aut.Family };
                         traductores.Add(person);
                     }
                     translator.NameList = new NameList() { Person = traductores };
@@ -69,58 +66,58 @@ namespace convert
 
                 newSource.Author = authorBase;
 
-                newSource.City = item.publisherplace;
-                newSource.Comments = item._abstract;
-                newSource.CountryRegion = item.publisherplace;
-                if (item.accessed is not null)
+                newSource.City = item.PublisherPlace;
+                newSource.Comments = item.Abstract;
+                newSource.CountryRegion = item.PublisherPlace;
+                if (item.Accessed is not null)
                 {
-                    if (item.accessed.dateparts is not null)
+                    if (item.Accessed.dateparts is not null)
                     {
-                        if (item.accessed.dateparts[0][2] is not null)
+                        if (item.Accessed.dateparts[0][2] is not null)
                         {
-                            newSource.DayAccessed = item.accessed.dateparts[0][2].ToString();
+                            newSource.DayAccessed = item.Accessed.dateparts[0][2].ToString();
                         }
-                        if (item.accessed.dateparts[0][1] is not null)
+                        if (item.Accessed.dateparts[0][1] is not null)
                         {
-                            newSource.MonthAccessed = item.accessed.dateparts[0][1].ToString();
+                            newSource.MonthAccessed = item.Accessed.dateparts[0][1].ToString();
                         }
-                        if (item.accessed.dateparts[0][0] is not null)
+                        if (item.Accessed.dateparts[0][0] is not null)
                         {
-                            newSource.YearAccessed = item.accessed.dateparts[0][0].ToString();
+                            newSource.YearAccessed = item.Accessed.dateparts[0][0].ToString();
                         }
                     }
                 }
              
                 newSource.DOI = item.ISBN;
-                newSource.Edition = item.edition;
+                newSource.Edition = item.Edition;
                 newSource.Guid = Guid.NewGuid().ToString();
                 newSource.Medium = "Zotero";
-                newSource.NumberVolumes = item.numberofvolumes;
-                newSource.Pages = item.numberofpages;
-                newSource.Publisher = item.publisher;
-                newSource.ShortTitle = item.titleshort;
-                newSource.SourceType = item.type;
-                newSource.StandardNumber = item.collectionnumber;
-                newSource.StateProvince = item.publisherplace;
+                newSource.NumberVolumes = item.NumberOfVolumes;
+                newSource.Pages = item.NumberOfPages;
+                newSource.Publisher = item.Publisher;
+                newSource.ShortTitle = item.TitleShort;
+                newSource.SourceType = item.Iype;
+                newSource.StandardNumber = item.CollectionNumber;
+                newSource.StateProvince = item.PublisherPlace;
                 newSource.URL = item.URL;
-                newSource.Title = item.title;
-                newSource.Volume = item.volume;
+                newSource.Title = item.Title;
+                newSource.Volume = item.Volume;
                 DateTime date;
-                if (item.issued is not null)
+                if (item.Issued is not null)
                 {
-                    if (item.issued.dateparts is not null)
+                    if (item.Issued.dateparts is not null)
                     {
-                        newSource.Year = item.issued.dateparts[0][0].ToString();
-                        newSource.Tag = item.title.Substring(0, 4)+ "_"+ newSource.Year;
+                        newSource.Year = item.Issued.dateparts[0][0].ToString();
+                        newSource.Tag = item.Title.Substring(0, 4)+ "_"+ newSource.Year;
                     }
                     else
                     {
-                        newSource.Tag = item.title.Substring(0, 5);
+                        newSource.Tag = item.Title.Substring(0, 5);
                     }
                 }           
                 else
                 {
-                    newSource.Tag = item.title.Substring(0, 5);
+                    newSource.Tag = item.Title.Substring(0, 5);
                 }
           
                
