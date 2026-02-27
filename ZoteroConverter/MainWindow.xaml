@@ -1,0 +1,17 @@
+﻿<Window x:Class="ZoteroConverter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZoteroConverter"
+        mc:Ignorable="d"
+        Title="Zotero Converter" Height="150" Width="200">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+            <Button x:Name="btnConvertir" Content="Exportar a Word" HorizontalAlignment="Left" Margin="10"  VerticalAlignment="Top" Click="btnConvertir_Click"/>
+            <TextBox x:Name="txtRutaArchivo" IsReadOnly="True" Margin="10" VerticalAlignment="Top" BorderBrush="Transparent"/>
+        </StackPanel>
+      
+
+    </Grid>
+</Window>
