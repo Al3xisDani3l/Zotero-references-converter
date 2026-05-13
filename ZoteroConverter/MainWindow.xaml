@@ -1,17 +1,165 @@
-﻿<Window x:Class="ZoteroConverter.MainWindow"
+<Window x:Class="ZoteroConverter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ZoteroConverter"
         mc:Ignorable="d"
-        Title="Zotero Converter" Height="150" Width="200">
-    <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
-            <Button x:Name="btnConvertir" Content="Exportar a Word" HorizontalAlignment="Left" Margin="10"  VerticalAlignment="Top" Click="btnConvertir_Click"/>
-            <TextBox x:Name="txtRutaArchivo" IsReadOnly="True" Margin="10" VerticalAlignment="Top" BorderBrush="Transparent"/>
-        </StackPanel>
-      
+        Title="Zotero Reference Converter"
+        Height="720"
+        MinHeight="560"
+        Width="1120"
+        MinWidth="920"
+        WindowStartupLocation="CenterScreen">
+    <Grid Background="#F6F7F9">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
+        <Border Grid.Row="0" Background="White" BorderBrush="#D8DEE8" BorderThickness="0,0,0,1" Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Referencias para exportar a Word"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="#1E293B" />
+                    <TextBlock x:Name="txtResumen"
+                               Margin="0,6,0,0"
+                               Foreground="#475569"
+                               Text="Carga un archivo JSON exportado desde Zotero para revisar las referencias antes de exportarlas." />
+                    <TextBox x:Name="txtRutaArchivo"
+                             Margin="0,12,0,0"
+                             MinWidth="520"
+                             IsReadOnly="True"
+                             BorderBrush="#CBD5E1"
+                             Background="#F8FAFC"
+                             Foreground="#334155"
+                             Padding="8"
+                             Text="Ningun archivo cargado" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Top">
+                    <Button x:Name="btnCargarArchivo"
+                            MinWidth="170"
+                            Height="36"
+                            Margin="12,0,0,0"
+                            Padding="12,0"
+                            Content="Subir archivo Zotero"
+                            Click="btnCargarArchivo_Click" />
+                    <Button x:Name="btnExportar"
+                            MinWidth="210"
+                            Height="36"
+                            Margin="10,0,0,0"
+                            Padding="12,0"
+                            Content="Exportar a Word"
+                            IsEnabled="False"
+                            Click="btnExportar_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    Background="White"
+                    BorderBrush="#D8DEE8"
+                    BorderThickness="1">
+                <DataGrid x:Name="dgReferencias"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          IsReadOnly="True"
+                          SelectionMode="Single"
+                          SelectionChanged="dgReferencias_SelectionChanged"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          AlternatingRowBackground="#F8FAFC"
+                          RowBackground="White"
+                          BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" Binding="{Binding Index}" Width="54" />
+                        <DataGridTextColumn Header="Titulo" Binding="{Binding Title}" Width="2*" />
+                        <DataGridTextColumn Header="Autores" Binding="{Binding Authors}" Width="1.4*" />
+                        <DataGridTextColumn Header="Anio" Binding="{Binding Year}" Width="90" />
+                        <DataGridTextColumn Header="Tipo" Binding="{Binding Type}" Width="130" />
+                        <DataGridTextColumn Header="Editorial" Binding="{Binding Publisher}" Width="1.1*" />
+                        <DataGridTextColumn Header="DOI / ISBN" Binding="{Binding Identifier}" Width="1.1*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <Border Grid.Column="2"
+                    Background="White"
+                    BorderBrush="#D8DEE8"
+                    BorderThickness="1"
+                    Padding="14">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Detalle de la referencia"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="#1E293B" />
+                        <TextBlock Text="Selecciona una fila para ver la informacion completa."
+                                   Margin="0,4,0,12"
+                                   Foreground="#64748B"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Text="Titulo" FontWeight="SemiBold" Foreground="#334155" />
+                            <TextBlock x:Name="txtDetalleTitulo" Margin="0,3,0,14" TextWrapping="Wrap" />
+
+                            <TextBlock Text="Autores" FontWeight="SemiBold" Foreground="#334155" />
+                            <TextBlock x:Name="txtDetalleAutores" Margin="0,3,0,14" TextWrapping="Wrap" />
+
+                            <TextBlock Text="Publicacion" FontWeight="SemiBold" Foreground="#334155" />
+                            <TextBlock x:Name="txtDetallePublicacion" Margin="0,3,0,14" TextWrapping="Wrap" />
+
+                            <TextBlock Text="URL" FontWeight="SemiBold" Foreground="#334155" />
+                            <TextBlock x:Name="txtDetalleUrl" Margin="0,3,0,14" TextWrapping="Wrap" />
+
+                            <TextBlock Text="Resumen / notas" FontWeight="SemiBold" Foreground="#334155" />
+                            <TextBlock x:Name="txtDetalleResumen" Margin="0,3,0,14" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Background="White" BorderBrush="#D8DEE8" BorderThickness="0,1,0,0" Padding="16,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="txtEstado"
+                           VerticalAlignment="Center"
+                           Foreground="#475569"
+                           Text="Listo." />
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Foreground="#64748B"
+                           Text="Destino: %APPDATA%\Microsoft\Bibliography\Sources.xml" />
+            </Grid>
+        </Border>
     </Grid>
 </Window>

@@ -85,7 +85,7 @@ namespace ZoteroConverter
 
                 using (var filexmlstram = File.OpenRead(worlFile.FullName))
                 {
-                    sources = (Sources)serializer.Deserialize(filexmlstram);
+                    sources = (Sources?)serializer.Deserialize(filexmlstram);
                 }
             }
             catch (Exception ex)
@@ -185,24 +185,9 @@ namespace ZoteroConverter
             newSource.City = item.PublisherPlace;
             newSource.Comments = item.Abstract;
             newSource.CountryRegion = item.PublisherPlace;
-            if (item.Accessed is not null)
-            {
-                if (item.Accessed.dateparts is not null)
-                {
-                    if (item.Accessed.dateparts[0][2] is not null)
-                    {
-                        newSource.DayAccessed = item.Accessed.dateparts[0][2].ToString();
-                    }
-                    if (item.Accessed.dateparts[0][1] is not null)
-                    {
-                        newSource.MonthAccessed = item.Accessed.dateparts[0][1].ToString();
-                    }
-                    if (item.Accessed.dateparts[0][0] is not null)
-                    {
-                        newSource.YearAccessed = item.Accessed.dateparts[0][0].ToString();
-                    }
-                }
-            }
+            newSource.DayAccessed = GetDatePart(item.Accessed, 2);
+            newSource.MonthAccessed = GetDatePart(item.Accessed, 1);
+            newSource.YearAccessed = GetDatePart(item.Accessed, 0);
 
             newSource.DOI = item.ISBN;
             newSource.Edition = item.Edition;
@@ -218,23 +203,8 @@ namespace ZoteroConverter
             newSource.URL = item.URL;
             newSource.Title = item.Title;
             newSource.Volume = item.Volume;
-            DateTime date;
-            if (item.Issued is not null)
-            {
-                if (item.Issued.dateparts is not null)
-                {
-                    newSource.Year = item.Issued.dateparts[0][0].ToString();
-                    newSource.Tag = item.Title.Substring(0, 4) + "_" + newSource.Year;
-                }
-                else
-                {
-                    newSource.Tag = item.Title.Substring(0, 5);
-                }
-            }
-            else
-            {
-                newSource.Tag = item.Title.Substring(0, 5);
-            }
+            newSource.Year = GetDatePart(item.Issued, 0);
+            newSource.Tag = CreateTag(item.Title, newSource.Year);
 
 
             return newSource;
@@ -258,125 +228,29 @@ namespace ZoteroConverter
 
             foreach (var item in references)
             {
-                var newSource = new Source();
-
-                //agregamos los authores
-                var author = new Author();
-                if (item.Author is not null)
-                {
-
-                    List<Entities.Microsoft.Person> authors = new List<Entities.Microsoft.Person>();
-                    foreach (var aut in item.Author)
-                    {
-                        Entities.Microsoft.Person person = new Entities.Microsoft.Person() { First = aut.Given, Last = aut.Family };
-                        authors.Add(person);
-                    }
-                    author.NameList = new NameList() { Person = authors };
-                }
-
-
-                //Agregamos los editores
-                var editor = new Entities.Microsoft.Editor();
-                if (item.Editor is not null)
-                {
-
-                    List<Entities.Microsoft.Person> editores = new List<Entities.Microsoft.Person>();
-                    foreach (var aut in item.Editor)
-                    {
-                        Entities.Microsoft.Person person = new Entities.Microsoft.Person() { First = aut.Given, Last = aut.Family };
-                        editores.Add(person);
-                    }
-                    editor.NameList = new NameList() { Person = editores };
-                }
-
-
-
-                //agregamos los traductores
-                var translator = new Entities.Microsoft.Translator();
-                if (item.Translator is not null)
-                {
-
-
-                    List<Entities.Microsoft.Person> traductores = new List<Entities.Microsoft.Person>();
-                    foreach (var aut in item.Translator)
-                    {
-                        Entities.Microsoft.Person person = new Entities.Microsoft.Person() { First = aut.Given, Last = aut.Family };
-                        traductores.Add(person);
-                    }
-                    translator.NameList = new NameList() { Person = traductores };
-                }
-
-
-                var authorBase = new AuthorBase() { Author = author, Editor = editor, Translator = translator };
-
-                newSource.Author = authorBase;
-
-                newSource.City = item.PublisherPlace;
-                newSource.Comments = item.Abstract;
-                newSource.CountryRegion = item.PublisherPlace;
-                if (item.Accessed is not null)
-                {
-                    if (item.Accessed.dateparts is not null)
-                    {
-                        if (item.Accessed.dateparts[0][2] is not null)
-                        {
-                            newSource.DayAccessed = item.Accessed.dateparts[0][2].ToString();
-                        }
-                        if (item.Accessed.dateparts[0][1] is not null)
-                        {
-                            newSource.MonthAccessed = item.Accessed.dateparts[0][1].ToString();
-                        }
-                        if (item.Accessed.dateparts[0][0] is not null)
-                        {
-                            newSource.YearAccessed = item.Accessed.dateparts[0][0].ToString();
-                        }
-                    }
-                }
-
-                newSource.DOI = item.ISBN;
-                newSource.Edition = item.Edition;
-                newSource.Guid = Guid.NewGuid().ToString();
-                newSource.Medium = "Zotero";
-                newSource.NumberVolumes = item.NumberOfVolumes;
-                newSource.Pages = item.NumberOfPages;
-                newSource.Publisher = item.Publisher;
-                newSource.ShortTitle = item.TitleShort;
-                newSource.SourceType = item.Iype;
-                newSource.StandardNumber = item.CollectionNumber;
-                newSource.StateProvince = item.PublisherPlace;
-                newSource.URL = item.URL;
-                newSource.Title = item.Title;
-                newSource.Volume = item.Volume;
-                DateTime date;
-                if (item.Issued is not null)
-                {
-                    if (item.Issued.dateparts is not null)
-                    {
-                        newSource.Year = item.Issued.dateparts[0][0].ToString();
-                        newSource.Tag = item.Title.Substring(0, 4) + "_" + newSource.Year;
-                    }
-                    else
-                    {
-                        newSource.Tag = item.Title.Substring(0, 5);
-                    }
-                }
-                else
-                {
-                    newSource.Tag = item.Title.Substring(0, 5);
-                }
-
-
-
-
-
-                origin.Add(newSource);
-
-
-
-
+                origin.Add(item.ToSource());
             }
 
 
+        }
+
+        private static string GetDatePart(Date? date, int partIndex)
+        {
+            if (date?.dateparts is null || date.dateparts.Length == 0 || date.dateparts[0].Length <= partIndex)
+            {
+                return string.Empty;
+            }
+
+            return date.dateparts[0][partIndex]?.ToString() ?? string.Empty;
+        }
+
+        private static string CreateTag(string? title, string? year)
+        {
+            var cleanTitle = string.IsNullOrWhiteSpace(title) ? "Zotero" : title.Trim();
+            var tagPrefixLength = Math.Min(5, cleanTitle.Length);
+            var tag = cleanTitle.Substring(0, tagPrefixLength);
+
+            return string.IsNullOrWhiteSpace(year) ? tag : $"{tag}_{year}";
         }
 
 
